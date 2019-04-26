@@ -22,15 +22,15 @@ class MockerContainer extends Container
         $arguments = func_get_args();
         $id = array_shift($arguments);
 
-//         if (!$this->has($id)) {
-//             throw new \InvalidArgumentException(sprintf('Cannot mock a non-existent service: "%s"', $id));
-//         }
-
         if (!array_key_exists($id, self::$mockedServices)) {
             self::$mockedServices[$id] = call_user_func_array(array('Mockery', 'mock'), $arguments);
         }
         
-        $this->privates[$id] = self::$mockedServices[$id];
+        if ($this->has($id)) {
+            $this->services[$id] = self::$mockedServices[$id];
+        } else {
+            $this->privates[$id] = self::$mockedServices[$id];
+        }
 
         return self::$mockedServices[$id];
     }
