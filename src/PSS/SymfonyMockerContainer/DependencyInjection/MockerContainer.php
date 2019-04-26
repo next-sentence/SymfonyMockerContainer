@@ -26,7 +26,7 @@ class MockerContainer extends Container
             self::$mockedServices[$id] = call_user_func_array(array('Mockery', 'mock'), $arguments);
         }
         
-        if ($this->has($id)) {
+        if (parent::has($id)) {
             $this->services[$id] = self::$mockedServices[$id];
         } else {
             $this->privates[$id] = self::$mockedServices[$id];
